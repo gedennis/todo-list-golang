@@ -2,11 +2,9 @@ package controllers
 
 import (
 	"net/http"
-	"time"
 	"todo/models"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lithammer/shortuuid"
 )
 
 type CreateTodoRequest struct {
@@ -14,68 +12,75 @@ type CreateTodoRequest struct {
 	Description string `json:"description"`
 }
 
-type UpdateTodoRequest struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-}
-
+// create todo
 func CreateTodo(c *gin.Context) {
+	// check request
 	var todoItem CreateTodoRequest
 	if err := c.ShouldBindJSON(&todoItem); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   err.Error(),
-			"message": "Create todo Failed",
+			"message": "Invalid Request",
 		})
 		return
 	}
-	var item = models.Todo{
-		ID:          shortuuid.New(),
-		CreateTime:  time.Now(),
+
+	// create
+	var todo = models.Todo{
 		Title:       todoItem.Title,
 		Description: todoItem.Description,
+		Status:      0,
 	}
-	models.Insert(item)
+
+	// response
+	if err := models.CreateTodo(&todo); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Failed to create todo",
+			"data":    todo,
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Create todo OK",
-	})
-
-}
-func GetTodoInfo(c *gin.Context) {
-	id := c.Param("id")
-	todo := models.Get(id)
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Get todo list ok.",
 		"data":    todo,
 	})
 }
 
+func GetTodoInfo(c *gin.Context) {
+	// id := c.Param("id")
+	// todo := models.Get(id)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Get todo list ok.",
+		// "data":    todo,
+	})
+}
+
 func GetTodoList(c *gin.Context) {
-	todos := models.GetAll()
+	// todos := models.GetAll()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Get todo list ok.",
-		"data":    todos,
+		// "data":    todos,
 	})
 }
 func UpdateTodo(c *gin.Context) {
-	var todoItem UpdateTodoRequest
-	id := c.Param("id")
-	if err := c.ShouldBindJSON(&todoItem); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error":   err.Error(),
-			"message": "Update todo Failed",
-		})
-		return
-	}
-	models.Update(id, todoItem.Title, todoItem.Description)
+	// var todoItem UpdateTodoRequest
+	// // id := c.Param("id")
+	// if err := c.ShouldBindJSON(&todoItem); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{
+	// 		"error":   err.Error(),
+	// 		"message": "Update todo Failed",
+	// 	})
+	// 	return
+	// }
+	// models.Update(id, todoItem.Title, todoItem.Description)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Update todo OK",
 	})
 
 }
 func RemoveTodo(c *gin.Context) {
-	id := c.Param("id")
-	models.Delete(id)
+	// id := c.Param("id")
+	// models.Delete(id)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Remove todo ok.",
 		"data":    nil,
