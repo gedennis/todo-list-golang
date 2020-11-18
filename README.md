@@ -4,6 +4,18 @@ Todo list demo backend with Golang.
 
 ## Usage
 
+下载代码：
+
+```bash
+$ git clone git@github.com:gedennis/todo-list-golang.git
+```
+
+### 启动 MySQL
+
+```bash
+$ docker run --name mysql -e MYSQL_ROOT_PASSWORD=root123 -p 3306:3306 -d mysql
+```
+
 ### 创建数据库
 
 ```sql
@@ -26,6 +38,7 @@ CREATE TABLE todos (
 ### 安装依赖
 
 ```bash
+$ cd todo-list-golang
 $ go install
 ```
 
