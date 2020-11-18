@@ -33,7 +33,23 @@ func GetTodo(todo *Todo, id string) (err error) {
 
 func GetTodoList(todoList *[]Todo, page, size int) (err error) {
 	if err = db.DB.Limit(size).Offset((page - 1) * size).Find(todoList).Error; err != nil {
-		fmt.Println("Get todo failed with error: ", err.Error())
+		fmt.Println("Get todo list failed with error: ", err.Error())
+		return err
+	}
+	return nil
+}
+
+func UpdateTodo(todo *Todo) (err error) {
+	if err = db.DB.Save(todo).Error; err != nil {
+		fmt.Println("Update todo failed with error: ", err.Error())
+		return err
+	}
+	return nil
+}
+
+func DeleteTodo(todo *Todo, id string) (err error) {
+	if err = db.DB.Where("id = ?", id).Delete(todo).Error; err != nil {
+		fmt.Println("Delete todo failed with error: ", err.Error())
 		return err
 	}
 	return nil

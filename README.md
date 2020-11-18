@@ -2,7 +2,7 @@
 
 Todo list demo backend with Golang.
 
-## 准备
+## Usage
 
 ### 创建数据库
 
@@ -22,3 +22,21 @@ CREATE TABLE todos (
 	PRIMARY KEY(id)
 );
 ```
+
+### 安装依赖
+
+```bash
+$ go install
+```
+
+### 运行
+
+```bash
+go run main.go
+```
+
+系统在 `localhost:8090`, 然后通过 postman 测试。
+
+## 参考
+
+- [go-gin-gorm-todos](https://github.com/satoshiyamamoto/go-gin-gorm-todos)
