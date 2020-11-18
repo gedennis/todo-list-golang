@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"todo/models"
 
@@ -46,11 +47,20 @@ func CreateTodo(c *gin.Context) {
 }
 
 func GetTodoInfo(c *gin.Context) {
-	// id := c.Param("id")
-	// todo := models.Get(id)
+	id := c.Param("id")
+
+	var todo = models.Todo{}
+	if err := models.GetTodo(&todo, id); err != nil {
+		fmt.Println(todo)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Failed to get todo",
+			"data":    nil,
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Get todo list ok.",
-		// "data":    todo,
+		"message": "Get todo info ok.",
+		"data":    todo,
 	})
 }
 

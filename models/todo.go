@@ -22,3 +22,11 @@ func CreateTodo(todo *Todo) (err error) {
 
 	return nil
 }
+
+func GetTodo(todo *Todo, id string) (err error) {
+	if err = db.DB.Where("id = ?", id).First(todo).Error; err != nil {
+		fmt.Println("Get todo failed with error: ", err.Error())
+		return err
+	}
+	return nil
+}
