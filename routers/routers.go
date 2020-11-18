@@ -17,7 +17,7 @@ func SetupRouter() *gin.Engine {
 	{
 		todoAPI.POST("/", controllers.CreateTodo)
 		todoAPI.GET("/:id", controllers.GetTodoInfo)
-		// todoAPI.GET("/", controllers.GetTodoList)
+		todoAPI.GET("/", controllers.GetTodoList)
 		// todoAPI.PUT("/:id", controllers.UpdateTodo)
 		// todoAPI.DELETE("/:id", controllers.RemoveTodo)
 	}

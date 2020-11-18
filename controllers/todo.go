@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"todo/models"
 
 	"github.com/gin-gonic/gin"
@@ -65,11 +66,21 @@ func GetTodoInfo(c *gin.Context) {
 }
 
 func GetTodoList(c *gin.Context) {
-	// todos := models.GetAll()
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(c.DefaultQuery("size", "5"))
+
+	todoList := []models.Todo{}
+	if err := models.GetTodoList(&todoList, page, size); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Failed to get todo list",
+			"data":    nil,
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Get todo list ok.",
-		// "data":    todos,
+		"data":    todoList,
 	})
 }
 func UpdateTodo(c *gin.Context) {
